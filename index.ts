@@ -61,7 +61,7 @@ app.post('/', (req: Request, res: Response) => {
   })
 
   //Read portion of crud
-  //based on the id
+  //based on the id i just want to get the info
   app.get('/:id', (req: Request, res: Response) => {
     connection.query("SELECT * FROM products WHERE id = ?", 
     [req.params.id], (err: MysqlError | null, result: any) => {
@@ -75,6 +75,7 @@ app.post('/', (req: Request, res: Response) => {
   })
 
 //Update portion of crud
+//i just wanted to update the products table name,price,and genre using a specifc id
 app.put('/:id', (req: Request, res: Response) => {
     req.body.id = Number(req.params.id)
     connection.query(
@@ -92,6 +93,8 @@ app.put('/:id', (req: Request, res: Response) => {
 
 
 //Delete portion of crud
+//from the dummy data that was created(id:16 ) 
+//i delete it doing a delete request and using the id
 app.delete('/:id', (req:Request, res:Response)=>{
     connection.query('DELETE FROM products WHERE id = ?',
      [req.params.id], (err: MysqlError | null) => {

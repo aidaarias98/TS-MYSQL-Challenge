@@ -47,7 +47,7 @@ app.post('/', function (req, res) {
     });
 });
 //Read portion of crud
-//based on the id
+//based on the id i just want to get the info
 app.get('/:id', function (req, res) {
     connection.query("SELECT * FROM products WHERE id = ?", [req.params.id], function (err, result) {
         if (err) {
@@ -59,6 +59,7 @@ app.get('/:id', function (req, res) {
     });
 });
 //Update portion of crud
+//i just wanted to update the products table name,price,and genre using a specifc id
 app.put('/:id', function (req, res) {
     req.body.id = Number(req.params.id);
     connection.query("UPDATE products SET name = ?, price = ?, genre = ? WHERE id = ?", [req.body.name, req.body.price, req.body.genre, req.body.id], function (err) {
@@ -71,6 +72,8 @@ app.put('/:id', function (req, res) {
     });
 });
 //Delete portion of crud
+//from the dummy data that was created(id:16 ) 
+//i delete it doing a delete request and using the id
 app["delete"]('/:id', function (req, res) {
     connection.query('DELETE FROM products WHERE id = ?', [req.params.id], function (err) {
         if (err) {
