@@ -1,0 +1,80 @@
+"use strict";
+//database connection using ts
+exports.__esModule = true;
+//importing dependencies/middleware needed and the types for ts
+var express_1 = require("express");
+var mysql_1 = require("mysql");
+var app = (0, express_1["default"])();
+app.use(express_1["default"].json()); //parsing incoming json requests
+var port = 5000; //calling port 
+//creating that connection to the mysql database
+var connection = mysql_1["default"].createConnection({
+    host: '127.0.0.1',
+    user: 'devuser',
+    password: 'Josefinaflores73',
+    database: 'dummydb'
+});
+//grabbing the query from the database 
+//will throw an error if it doesnt 
+app.get('/', function (req, res) {
+    connection.query('SELECT * FROM products', req.body, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).end();
+            return;
+        }
+        res.status(200).json(result).end();
+    });
+});
+//listening on the port 5000
+app.listen(port, function () {
+    console.log("Listening on port ".concat(port));
+});
+//CRUD
+//Create portion of crud
+//added dummy data 
+app.post('/', function (req, res) {
+    connection.query("INSERT INTO products SET ?", req.body, function (err, result) {
+        if (err) {
+            console.error(err);
+            res.status(500).end();
+            return;
+        }
+        req.body.id = result.insertId;
+        res.status(200).json(req.body).end();
+    });
+});
+//Read portion of crud
+app.get('/:id', function (req, res) {
+    connection.query("SELECT * FROM products WHERE id = ?", [req.params.id], function (err, result) {
+        if (err) {
+            console.error(err);
+            res.status(500).end();
+            return;
+        }
+        res.status(200).json(result).end();
+    });
+});
+//Update portion of crud
+app.put('/:id', function (req, res) {
+    req.body.id = Number(req.params.id);
+    connection.query("UPDATE products SET name = ?, price = ?, genre = ? WHERE id = ?", [req.body.name, req.body.price, req.body.genre, req.body.id], function (err) {
+        if (err) {
+            console.error(err);
+            res.status(500).end();
+            return;
+        }
+        res.status(200).json(req.body).end();
+    });
+});
+//Delete portion of crud
+app["delete"]('/:id', function (req, res) {
+    connection.query('DELETE FROM products WHERE id = ?', [req.params.id], function (err) {
+        if (err) {
+            console.log(err);
+            res.status(500).end();
+            return;
+        }
+        res.status(200).end();
+    });
+});
