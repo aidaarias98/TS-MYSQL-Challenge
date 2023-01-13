@@ -31,6 +31,8 @@ app.listen(port, function () {
     console.log("Listening on port ".concat(port));
 });
 //CRUD
+//not sure if this was part of the challenge but it was 
+//good practice with postman as well
 //Create portion of crud
 //added dummy data 
 app.post('/', function (req, res) {
@@ -45,6 +47,7 @@ app.post('/', function (req, res) {
     });
 });
 //Read portion of crud
+//based on the id
 app.get('/:id', function (req, res) {
     connection.query("SELECT * FROM products WHERE id = ?", [req.params.id], function (err, result) {
         if (err) {
